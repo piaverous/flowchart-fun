@@ -16,7 +16,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { Box, Type, Layout } from "@tone-row/slang";
 import dagre from "cytoscape-dagre";
 import cytoscapeSvg from "cytoscape-svg";
-import { LAYOUT, lineColor, textColor } from "../constants";
+import { LAYOUT, lineColor } from "../constants";
 import { parseText, useAnimationSetting } from "../utils";
 import { Github, Twitter } from "./svgs";
 import styles from "./Graph.module.css";
@@ -59,6 +59,9 @@ function Graph({
         cy.current.json({ elements: newElements });
         cy.current.layout(layoutSettings as any).run();
         cy.current.center();
+        console.log({curr: cy.current})
+        console.log({newElements})
+
       }
     }
   }, [layoutSettings, textToParse]);
@@ -122,9 +125,9 @@ function Graph({
         {
           selector: "node",
           style: {
-            backgroundColor: "#FFFFFF",
+            "backgroundColor": "data(bgColor)",
             "border-color": lineColor,
-            color: textColor,
+            "color": "data(textColor)",
             label: "data(label)",
             "font-size": 10,
             "text-wrap": "wrap",
@@ -176,7 +179,8 @@ function Graph({
         {
           selector: ".nodeHovered",
           style: {
-            backgroundColor: "#ededec",
+            "backgroundColor": "data(hoverBg)",
+            "color": "data(hoverText)",
           },
         },
       ],

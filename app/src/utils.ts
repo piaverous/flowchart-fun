@@ -3,6 +3,17 @@ import { CytoscapeOptions } from "cytoscape";
 import { useLocation } from "react-router-dom";
 
 const idMatch = new RegExp(/^\s*\[(.*)\]/);
+const matchColor = new RegExp(/^\s*\{(.*)\}/);
+
+const colorMap: any = {
+  "white": {"text": "#000000", "bg": "#FFFFFF", "hoverText": "#000000", "hoverBg": "#EDEDEC"},
+  "red": {"text": "#FFFFFF", "bg": "#D32F2F", "hoverText": "#FFFFFF", "hoverBg": "#B71C1C"},
+  "blue": {"text": "#FFFFFF", "bg": "#2962FF", "hoverText": "#FFFFFF", "hoverBg": "#0D47A1"},
+  "green": {"text": "#000000", "bg": "#00E676", "hoverText": "#000000", "hoverBg": "#00C853"},
+  "yellow": {"text": "#000000", "bg": "#EEFF41", "hoverText": "#000000", "hoverBg": "#CDDC39"},
+  "grey": {"text": "#000000", "bg": "#BDBDBD", "hoverText": "#000000", "hoverBg": "#9E9E9E"},
+}
+
 export function parseText(text: string) {
   const matchIndent = new RegExp(/^( )+/g);
   const lines = strip(text, { preserveNewlines: true }).split("\n");
@@ -16,6 +27,13 @@ export function parseText(text: string) {
       continue;
     }
     let indentMatch = line.match(matchIndent);
+    let color: RegExpMatchArray | null | string = line.match(matchColor);
+    color = color ? color[1] : "white"
+    const textColor = colorMap[color]["text"] 
+    const bgColor = colorMap[color]["bg"] 
+    const hoverText = colorMap[color]["hoverText"] 
+    const hoverBg = colorMap[color]["hoverBg"] 
+
     let linkMatch: RegExpMatchArray | null | string = getNodeLabel(line).match(
       /^\((.+)\)$/
     );
@@ -78,6 +96,10 @@ export function parseText(text: string) {
           id: hasId ? hasId[1] : lineNumber.toString(),
           label,
           lineNumber,
+          textColor,
+          bgColor,
+          hoverText,
+          hoverBg,
           ...getSize(label),
         },
       });
@@ -127,8 +149,10 @@ function getEdgeLabel(line: string) {
 }
 function getNodeLabel(line: string) {
   const hasId = line.match(idMatch);
-  const lineWithoutId = hasId ? line.slice(hasId[0].length) : line;
-  let value = lineWithoutId.trim();
+  const hasColor = line.match(matchColor);
+  const lineWithoutId = hasId ? line.slice(hasId[0].length).trim() : line;
+  const lineWithoutColor = hasColor ? lineWithoutId.slice(hasColor[0].length) : lineWithoutId;
+  let value = lineWithoutColor.trim();
   if (lineWithoutId.indexOf(": ") > -1) {
     value = lineWithoutId.split(": ").slice(1).join(": ").trim();
   }
