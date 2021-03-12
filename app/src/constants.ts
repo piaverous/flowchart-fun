@@ -18,6 +18,8 @@ export const defaultText = `this app works by typing
     lines have a default ID of their line-number
       but you can also supply a custom ID in brackets
         like this: (linking) // use single line comments
+      {red}a colored cell can be created like so
+      {blue}you can choose from red, blue, yellow, green, grey and white
 /*
 or 
 multiline 
