@@ -59,8 +59,6 @@ function Graph({
         cy.current.json({ elements: newElements });
         cy.current.layout(layoutSettings as any).run();
         cy.current.center();
-        console.log({curr: cy.current})
-        console.log({newElements})
 
       }
     }

@@ -2,8 +2,8 @@ import strip from "@tone-row/strip-comments";
 import { CytoscapeOptions } from "cytoscape";
 import { useLocation } from "react-router-dom";
 
-const idMatch = new RegExp(/^\s*\[(.*)\]/);
-const matchColor = new RegExp(/^\s*\{(.*)\}/);
+const idMatch = new RegExp(/^\s*\[(\w*)\]/);
+const matchColor = new RegExp(/^\s*\{(\w*)\}/);
 
 const colorMap: any = {
   "white": {"text": "#000000", "bg": "#FFFFFF", "hoverText": "#000000", "hoverBg": "#EDEDEC"},
@@ -12,6 +12,7 @@ const colorMap: any = {
   "green": {"text": "#000000", "bg": "#00E676", "hoverText": "#000000", "hoverBg": "#00C853"},
   "yellow": {"text": "#000000", "bg": "#EEFF41", "hoverText": "#000000", "hoverBg": "#CDDC39"},
   "grey": {"text": "#000000", "bg": "#BDBDBD", "hoverText": "#000000", "hoverBg": "#9E9E9E"},
+  "purple": {"text": "#FFFFFF", "bg": "#7c4dff", "hoverText": "#FFFFFF", "hoverBg": "#651fff"},
 }
 
 export function parseText(text: string) {
